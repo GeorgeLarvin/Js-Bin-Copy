@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Code player</title>
+	<link href="style.css" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Arima+Madurai|Pavanam" rel="stylesheet"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="jquery.js"></script>
+	
+	<!-- google fonts below-->
+	<link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+	
+</head>
+<body>
+
+
+
+<!-- TOP BAR  -->
+	<div id="top-bar">
+	
+		<h1 id="logo">Code Player</h2>
+		
+		<div id="toggle-buttons">
+			<div class="items active" id="html">HTML</div>
+			<div class="items" id="css">CSS</div>
+			<div class="items" id="javascript">JS</div>
+			<div class="items active" id="output">Output</div>
+		</div>
+	
+	</div>
+	
+<!-- MAIN CONTENT -->	
+
+	<div id="body-container">
+
+		<textarea id="htmlpanel" class="panel"><p id="p1">Hello im here</p></textarea>		
+		<textarea id="csspanel" class="panel hidden">p{color:red;}</textarea>		
+		<textarea id="javascriptpanel" class="panel hidden">
+			document.getElementById("p1").innerHTML = "Hello geirge";
+		</textarea>		
+		<iframe id="outputpanel" class="panel"></iframe>
+	
+	</div>
+
+<script>
+
+	function updateOutput(){
+	$("iframe").contents().find("html").html("<html><head><style type='text/css'>" + 
+	$("#csspanel").val() + "</style></head><body>" +
+	$("#htmlpanel").val() + "</body></html>" );
+		
+	document.getElementById("outputpanel").contentWindow.eval($("#javascriptpanel").val());
+	
+}
+
+$(".items").hover(function(){
+
+	$(this).addClass("highlighted-btn");
+	
+}, function(){
+
+	$(this).removeClass("highlighted-btn");
+
+});
+
+$(".items").click(function (){
+
+	$(this).toggleClass("active");
+	$(this).removeClass("highlighted-btn");
+	var areaid = $(this).attr("id") + "panel";
+	
+	$("#" + areaid).toggleClass("hidden");
+	
+	var numberOfActivePanels = 4 - $(".hidden").length;
+	
+	$(".panel").width(($(window).width() /numberOfActivePanels )- 15);
+	
+}) ;
+
+
+$(".panel").height($(window).height() - $("#top-bar").height() - 8);
+
+$(".panel").width(($(window).width() /2 )- 15);
+
+updateOutput();
+
+$(".panel").on('change keyup paste', function(){
+
+	updateOutput();
+
+});
+
+
+
+
+
+
+</script>
+
+</body>
+</html>	
